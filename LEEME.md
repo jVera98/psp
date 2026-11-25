@@ -5,19 +5,10 @@ Todo está en `src/main/java/es/juanjovera/chuletas/`. **Abrir:** IntelliJ → *
 
 ## Procesos (apartado 5)
 
-La chuleta completa está en **[PROCESOS.md](PROCESOS.md)**: conceptos, `ProcessBuilder` y `Process` método a
-método, el esquema del ejercicio 2, las trampas típicas y los comandos de Windows y Linux. Cada apartado tiene un
-ejemplo ejecutable en `procesos/`:
-
-| Carpeta | Qué enseña |
-|---|---|
-| `procesos/crear/` | Lanzar un proceso: `ProcessBuilder`, `Runtime.exec`, comando según el SO, `directory`, `environment` |
-| `procesos/gestionar/` | `isAlive`, `waitFor` con tiempo máximo, `exitValue`, `destroy` |
-| `procesos/salida/` | Leer lo que escribe el hijo y su código de salida |
-| `procesos/redireccion/` | Salida, errores y entrada desde y hacia ficheros |
-| `procesos/entrada/` | Mandar datos al hijo con `getOutputStream` |
-| `procesos/tuberia/` | La salida de un proceso como entrada de otro |
-| `procesos/paralelo/` | Todo junto: dos hijos en paralelo con su fichero cada uno y un resumen (como el ejercicio 2) |
+Un solo ejercicio con `ProcessBuilder`, en `procesos/`: una estación meteorológica. El padre (`Main`) lanza 3
+sensores en paralelo con la salida y los errores redirigidos a ficheros, los espera y comprueba su código de
+salida, junta sus lecturas y se las manda a una calculadora por su entrada estándar. La explicación paso a paso,
+los métodos, las trampas y los comandos de Windows y Linux están en **[PROCESOS.md](PROCESOS.md)**.
 
 ## Hilos y sincronización
 
