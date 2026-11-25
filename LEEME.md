@@ -1,4 +1,25 @@
-# Chuletas para el examen · PSP UT01 (hilos y sincronización)
+# Chuletas para el examen · PSP UT01 (procesos, hilos y sincronización)
+
+Todo está en `src/main/java/es/juanjovera/chuletas/`. **Abrir:** IntelliJ → *Open* → esta carpeta (el `pom.xml`).
+**Ejecutar:** botón ▶ junto al `main` del `Main.java` de cada paquete (JDK 25).
+
+## Procesos (apartado 5)
+
+La chuleta completa está en **[PROCESOS.md](PROCESOS.md)**: conceptos, `ProcessBuilder` y `Process` método a
+método, el esquema del ejercicio 2, las trampas típicas y los comandos de Windows y Linux. Cada apartado tiene un
+ejemplo ejecutable en `procesos/`:
+
+| Carpeta | Qué enseña |
+|---|---|
+| `procesos/crear/` | Lanzar un proceso: `ProcessBuilder`, `Runtime.exec`, comando según el SO, `directory`, `environment` |
+| `procesos/gestionar/` | `isAlive`, `waitFor` con tiempo máximo, `exitValue`, `destroy` |
+| `procesos/salida/` | Leer lo que escribe el hijo y su código de salida |
+| `procesos/redireccion/` | Salida, errores y entrada desde y hacia ficheros |
+| `procesos/entrada/` | Mandar datos al hijo con `getOutputStream` |
+| `procesos/tuberia/` | La salida de un proceso como entrada de otro |
+| `procesos/paralelo/` | Todo junto: dos hijos en paralelo con su fichero cada uno y un resumen (como el ejercicio 2) |
+
+## Hilos y sincronización
 
 Tres problemas clásicos, cada uno resuelto de dos formas: con **monitor** (`synchronized` + `wait` + `notifyAll`)
 y con **semáforos** (`java.util.concurrent.Semaphore`). Los ha escrito Claude como guía de consulta (25/11/2026).
@@ -10,14 +31,11 @@ Se han ejecutado 4 veces cada uno: todos terminan solos y cumplen las reglas del
 | Barbero dormido (1 barbero, 4 sillas, 10 clientes) | `barbero/sync/` | `barbero/semaforo/` |
 | Cena de los filósofos (5 filósofos, 3 comidas) | `filosofos/sync/` | `filosofos/semaforo/` |
 
-Todo está en `src/main/java/es/juanjovera/chuletas/`. **Abrir:** IntelliJ → *Open* → esta carpeta (el `pom.xml`).
-**Ejecutar:** botón ▶ junto al `main` del `Main.java` de cada paquete (JDK 25).
-
 En cada carpeta, lo importante está en el **recurso compartido** (`Jardin`, `Barberia`, `Mesa`): los hilos
 (`Visitante`, `Cliente`, `Barbero`, `Filosofo`) solo llaman a sus métodos. `Main` y la clase del hilo son iguales
 en las dos versiones; lo único que cambia es el recurso compartido.
 
-## Lo mismo, de las dos formas
+### Lo mismo, de las dos formas
 
 | Quiero… | Monitor | Semáforos |
 |---|---|---|
@@ -29,7 +47,7 @@ en las dos versiones; lo único que cambia es el recurso compartido.
 | Despertar a uno en concreto | un campo en ese objeto + `notifyAll()` (cada uno mira el suyo) | un `Semaphore(0)` dentro de ese objeto (`Cliente.pelado`) |
 | Terminar un hilo con `while (true)` | `join()` de los demás, luego `hilo.interrupt()` y `hilo.join()` | igual |
 
-## Lo que hay que mirar antes de dar el código por bueno
+### Lo que hay que mirar antes de dar el código por bueno
 
 1. **Comprobar y actuar en un solo paso.** Mirar si hay sitio y cogerlo van dentro del mismo `synchronized` o del
    mismo `mutex`, o se hacen con `tryAcquire()`. Si los separas, otro hilo se cuela en medio.
@@ -44,7 +62,7 @@ en las dos versiones; lo único que cambia es el recurso compartido.
 7. **Las trazas, exactas.** Copia el texto del enunciado con su punto final y sus paréntesis.
 8. **El `main` termina el último.** `join()` de todos los hilos y el mensaje de «Fin» después.
 
-## Interbloqueo en los filósofos (la pregunta típica)
+### Interbloqueo en los filósofos (la pregunta típica)
 
 Si todos cogen primero el tenedor izquierdo, los 5 pueden quedarse con uno y esperar el otro para siempre. Hay
 tres formas de evitarlo, y cada una rompe una de las condiciones del interbloqueo:
