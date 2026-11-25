@@ -72,6 +72,21 @@ tres formas de evitarlo, y cada una rompe una de las condiciones del interbloque
   puede formarse la espera en círculo.
 - **Dejar como mucho N−1 sentados** con un `Semaphore(N - 1)`: siempre queda alguien que puede comer.
 
+### Jardín con riego (`jardin/riego/`, solo semáforos)
+
+El ejercicio de repaso del 24/11: el jardín con aforo y un **jardinero** que riega 3 veces. Solo empieza con el
+jardín vacío y, mientras riega, no entra nadie. Es la corrección de tu `practicas/pruebaJardin` (25/11/2026). Se
+ha ejecutado 23 veces y cumple las cinco comprobaciones del enunciado. Lo nuevo respecto a `jardin/semaforo/`:
+
+- **Señal «se ha vaciado»:** `avisoJardinero = new Semaphore(0)`. El jardinero hace `acquire()` **fuera del mutex**
+  y solo si había gente. El último visitante que sale hace `release()`, pero solo si `jardineroEsperando`.
+- **El `boolean` es el que sabe si alguien espera.** Un semáforo no lo dice. Si avisas siempre que se vacía, los
+  permisos se acumulan y el jardinero acaba regando con gente dentro.
+- **Cerrar la puerta:** el jardinero coge todas las plazas con `aforo.acquire(MAX_PLAZAS)` y las suelta con
+  `release(MAX_PLAZAS)` al terminar. El `boolean regando` solo sirve para elegir la traza del que espera.
+- **Ojo (pregunta 2 del ejercicio):** mientras el jardinero espera a que se vacíe, siguen entrando visitantes. Con
+  los tiempos del enunciado suele esperar hasta que se van los 12.
+
 > **Ojo con la tarea online 1:** el barbero de aquí manda directo a la silla de corte al cliente que despierta al
 > barbero, sin pasar por la sala. El 24/11 decidiste dejarlo como lo tienes en la tarea. Esto es una chuleta para
 > el examen, no para copiar en la entrega.
